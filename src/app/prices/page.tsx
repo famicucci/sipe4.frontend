@@ -1,7 +1,9 @@
-import { UseSelector, useDispatch } from "react-redux"
+"use client"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 const Page: React.FC = () => {
-  const dispatch = useDispatch()
+  const prices = useSelector((state: RootState) => state.price.prices)
 
   return (
     <div>
@@ -14,16 +16,13 @@ const Page: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td>$50.000</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td>$40.000</td>
-          </tr>
+          {prices.map((price) => (
+            <tr key={price.id}>
+              <td>{price.id}</td>
+              <td>producto</td>
+              <td>${price.amount}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
