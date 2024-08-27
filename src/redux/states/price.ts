@@ -1,15 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { getPricesRequest } from "@/services/getPricesRequest"
+export interface Price {
+  id: string
+  amount: string
+}
 interface PriceState {
-  prices: { id: string; amount: string }[]
+  prices: Price[]
 }
 
 const initialState: PriceState = {
-  prices: [
-    { id: "1", amount: "1850.00" },
-    { id: "2", amount: "1760.00" },
-    { id: "3", amount: "1320.00" },
-  ],
+  prices: [],
 }
+
 export const priceSlice = createSlice({
   name: "price",
   initialState,
@@ -18,7 +20,13 @@ export const priceSlice = createSlice({
       state.prices = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getPricesRequest.fulfilled, (state, action) => {
+      state.prices = action.payload
+    })
+  },
 })
 
 export const { setPrices } = priceSlice.actions
 export default priceSlice.reducer
+    

@@ -1,9 +1,18 @@
 "use client"
-import { useSelector } from "react-redux"
-import { RootState } from "@/redux/store"
+import { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { AppDispatch, RootState } from "@/redux/store"
+import { getPricesRequest } from "@/services/getPricesRequest"
 
 const Page: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const prices = useSelector((state: RootState) => state.price.prices)
+
+  useEffect(() => {
+    dispatch(getPricesRequest())
+  }, [dispatch])
+
+  console.log(prices)
 
   return (
     <div>
