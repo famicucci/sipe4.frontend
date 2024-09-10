@@ -1,9 +1,10 @@
 export class AppError {
   name: string
   message: string
-
-  constructor(name: string, message: string) {
-    this.name = "nameEjemplo"
+  statusCode: number
+  constructor(name: string, message: string, statusCode: number) {
+    this.name = name
     this.message = message
+    this.statusCode = statusCode
   }
 }

@@ -16,7 +16,7 @@ export const getPricesRequest = createAsyncThunk<Price[], void>(
     const data = await response.json()
 
     if (!response.ok) {
-      const error = new AppError(data.error, data.message)
+      const error = new AppError(data.error, data.message, data.status)
       return rejectWithValue(error)
     }
     return data
