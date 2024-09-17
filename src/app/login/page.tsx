@@ -1,36 +1,42 @@
 "use client"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, AppDispatch } from "@/redux/store"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { loginRequest } from "@/services/loginRequest"
 import { handleLogin } from "@/redux/states/user"
+import { LoginResponse } from "@/redux/states/user"
 
-interface FormData {
+export interface LoginUser {
   user: string
   password: string
 }
 
 const LoginPage: React.FC = () => {
+  const router = useRouter()
+
   const dispatch = useDispatch<AppDispatch>()
-  const { loading, error, user } = useSelector((state: RootState) => state.auth)
+  const { loading, error } = useSelector((state: RootState) => state.auth)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<LoginUser>()
 
-  const onSubmit = handleSubmit(async (data: FormData) => {
+  const onSubmit = handleSubmit(async (data: LoginUser) => {
     try {
-      const response = await dispatch(loginRequest(data))
-      console.log(response)
-      // dispatch(handleLogin({ token: response.token }))
+      const response: LoginResponse = await dispatch(
+        loginRequest(data)
+      ).unwrap()
+
+      dispatch(
+        handleLogin({ token: response.success, userType: response.userType })
+      )
+      router.push("/precios")
     } catch (error) {
       console.log(error)
     }
-    // const response = await loginRequest(data)
-    // console.log(data)
-    // dispatch(handleLogin({ token: response.succese }))
   })
 
   return (

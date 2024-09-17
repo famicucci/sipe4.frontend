@@ -1,12 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { User } from "../redux/states/user"
 import { AppError } from "./errorRequest"
+import { LoginUser } from "@/app/login/page"
+import { LoginResponse } from "@/redux/states/user"
 
-interface LoginResponse {
-  user: User
-  token: string
-}
-export const loginRequest = createAsyncThunk<LoginResponse, User>(
+export const loginRequest = createAsyncThunk<LoginResponse, LoginUser>(
   "user/loginRequest",
   async (user, { rejectWithValue }) => {
     // const token = process.env.NEXT_PUBLIC_TOKEN
@@ -21,16 +18,11 @@ export const loginRequest = createAsyncThunk<LoginResponse, User>(
       body: JSON.stringify(user),
     })
     const data = await response.json()
+
     if (!response.ok) {
-      return rejectWithValue({
-        message: data.message || "Algo salio mal",
-        statusCode: response.status,
-      })
+      const error = new AppError(data.error, data.message, data.status)
+      return rejectWithValue(error)
     }
-    // if (!response.ok) {
-    //   const error = new AppError(data.error, data.message, data.status)
-    //   return rejectWithValue(error)
-    // }
     return data
   }
 )
