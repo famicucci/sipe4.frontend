@@ -8,14 +8,14 @@ export interface LoginResponse {
 
 interface AuthState {
   userType: string
-  token: string
+  success: string
   loading: boolean
   error: any
 }
 
 const initialState: AuthState = {
   userType: "",
-  token: "",
+  success: "",
   loading: false,
   error: null,
 }
@@ -26,15 +26,15 @@ export const authSlice = createSlice({
   reducers: {
     handleLogin: (
       state,
-      action: PayloadAction<{ token: string; userType: string }>
+      action: PayloadAction<{ success: string; userType: string }>
     ) => {
-      state.token = action.payload.token
+      state.success = action.payload.success
       state.userType = action.payload.userType
     },
 
     handleLogout: (state) => {
       state.userType = ""
-      state.token = ""
+      state.success = ""
     },
   },
   extraReducers: (builder) => {
@@ -46,7 +46,7 @@ export const authSlice = createSlice({
       .addCase(
         loginRequest.fulfilled,
         (state, action: PayloadAction<LoginResponse>) => {
-          state.token = action.payload.success
+          state.success = action.payload.success
           state.loading = false
         }
       )
