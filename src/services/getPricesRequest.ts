@@ -8,9 +8,7 @@ export const getPricesRequest = createAsyncThunk<
   Price[],
   void,
   { state: RootState }
->("prices/getPricesRequest", async (_, { rejectWithValue, getState }) => {
-  // const state = getState()
-  // const token = state.auth.success
+>("prices/getPricesRequest", async (_, { rejectWithValue }) => {
   const token = await getToken()
 
   const baseUrl = process.env.NEXT_PUBLIC_LOCALHOST
@@ -29,6 +27,5 @@ export const getPricesRequest = createAsyncThunk<
     const error = new AppError(data.error, data.message, data.status)
     return rejectWithValue(error)
   }
-
   return data
 })
