@@ -1,12 +1,14 @@
 "use client"
-import { useState, useTransition } from "react"
+
+import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { loginRequest } from "@/services/loginRequest"
 import { LoginUser } from "@/services/loginRequest"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { formLoginSchema } from "./utils/formValidation"
 
 const LoginPage: React.FC = () => {
-  const [error, setError] = useState("")
   const [isPending, startTransition] = useTransition()
 
   const router = useRouter()
@@ -14,8 +16,11 @@ const LoginPage: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
-  } = useForm<LoginUser>()
+  } = useForm<LoginUser>({
+    resolver: yupResolver(formLoginSchema),
+  })
 
   const onSubmit = (data: LoginUser) => {
     startTransition(async () => {
@@ -23,8 +28,10 @@ const LoginPage: React.FC = () => {
         await loginRequest(data)
         router.push("/precios")
       } catch (error: any) {
-        console.log(error)
-        setError(error.toString())
+        setError("user", {
+          type: "manual",
+          message: error.message,
+        })
       }
     })
   }
@@ -41,13 +48,7 @@ const LoginPage: React.FC = () => {
             type="text"
             placeholder="Nombre de usuario"
             className="bg-gray-200 text-black rounded-md"
-            {...register("user", {
-              required: { value: true, message: "*Campos obligatorios" },
-              maxLength: {
-                value: 10,
-                message: "*Máximo de 10 caracteres",
-              },
-            })}
+            {...register("user")}
           />
         </div>
         <div>
@@ -55,12 +56,7 @@ const LoginPage: React.FC = () => {
             type="password"
             placeholder="Contraseña"
             className="bg-gray-200 text-black rounded-md"
-            {...register("password", {
-              required: {
-                value: true,
-                message: "*Campo de contraseña obligatorio",
-              },
-            })}
+            {...register("password")}
           />
         </div>
         <button className="bg-indigo-500 p-2 rounded-md" type="submit">
