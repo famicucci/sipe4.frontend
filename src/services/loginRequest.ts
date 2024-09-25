@@ -20,7 +20,7 @@ export const loginRequest = createAsyncThunk<LoginResponse, LoginUser>(
     })
     const data = await response.json()
 
-    await Promise.all([setToken(data.success), setUserType(data.userType)])
+    await JSON.stringify([setToken(data.success), setUserType(data.userType)])
 
     if (!response.ok) {
       const error = new AppError(data.error, data.message, data.status)

@@ -29,10 +29,10 @@ const LoginPage: React.FC = () => {
       const response: LoginResponse = await dispatch(
         loginRequest(data)
       ).unwrap()
-      console.log("Response:", response)
+
       dispatch(
         handleLogin({ success: response.success, userType: response.userType })
-      ) 
+      )
       router.push("/precios")
     } catch (error) {
       console.log(error)
