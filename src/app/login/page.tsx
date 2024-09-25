@@ -33,7 +33,9 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         {errors.user && <p className="text-red-500">{errors.user.message}</p>}
-
+        {errors.password && (
+          <p className="text-red-500">{errors.password.message}</p>
+        )}
         <div>
           <input
             type="text"
@@ -54,7 +56,10 @@ const LoginPage: React.FC = () => {
             placeholder="Contraseña"
             className="bg-gray-200 text-black rounded-md"
             {...register("password", {
-              required: { value: true, message: "*Campos obligatorios" },
+              required: {
+                value: true,
+                message: "*Campo de contraseña obligatorio",
+              },
             })}
           />
         </div>

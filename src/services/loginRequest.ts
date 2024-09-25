@@ -1,6 +1,4 @@
 import { AppError } from "./errorRequest"
-import { setToken } from "@/config/cookies"
-import { setUserType } from "@/config/setUserType"
 
 export interface LoginUser {
   user: string
@@ -24,8 +22,6 @@ export const loginRequest = async (user: LoginUser): Promise<LoginResponse> => {
   })
 
   const data = await response.json()
-
-  await JSON.stringify([setToken(data.success), setUserType(data.userType)])
 
   if (!response.ok) {
     throw new AppError(data.error, data.message, data.status)
