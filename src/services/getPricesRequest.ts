@@ -3,6 +3,7 @@ import { Price } from "../redux/states/price"
 import { RootState } from "../redux/store"
 import { AppError } from "./errorRequest"
 import { getToken } from "@/config/getCookie"
+import { decodeJWT } from "@/config/decoded"
 
 export const getPricesRequest = createAsyncThunk<
   Price[],
