@@ -1,44 +1,48 @@
 import { NextResponse, NextRequest } from "next/server"
 import { decodeJWT } from "./config/decoded"
 
-const protectedRoutes = ["/precios", "/register"]
-const publicRoutes = ["/precios", "/login"]
-const routeAdmin = ["/admin"]
+type RouteConfig = {
+  isProtected: boolean
+  requireRole: "admin" | "user"
+}
+type Routes = "/precios" | "/register" | "/admin" | "/login"
+
+const routes: Record<Routes, RouteConfig> = {
+  "/precios": { isProtected: true, requireRole: "user" },
+  "/register": { isProtected: true, requireRole: "user" },
+  "/admin": { isProtected: true, requireRole: "admin" },
+  "/login": { isProtected: false, requireRole: "user" },
+}
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("userToken")?.value
   const decod = token ? await decodeJWT(token) : null
 
-  const path = req.nextUrl.pathname
-  const isProtectedRoute = protectedRoutes.includes(path)
-  const isPublicRoute = publicRoutes.includes(path)
-  const isRouteAdmin = routeAdmin.includes(path)
+  const path = req.nextUrl.pathname as Routes
+  const currentRoute = routes[path]
 
-  if (isProtectedRoute && !token) {
-    const response = NextResponse.redirect(new URL("/login", req.url))
-    return response
+  if (!currentRoute) {
+    return NextResponse.next()
   }
 
-  if (isRouteAdmin && !token) {
-    return NextResponse.redirect(new URL("/login", req.url))
+  if (currentRoute.isProtected && !token) {
+    return NextResponse.redirect(new URL("/login", req.nextUrl))
   }
 
   if (token) {
     try {
       const userType = decod?.userType
-      if (isRouteAdmin && userType === "user") {
-        const response = NextResponse.redirect(new URL("/error", req.url))
-        return response
+
+      if (currentRoute.requireRole === "admin" && userType !== "admin") {
+        return NextResponse.redirect(new URL("/error", req.nextUrl))
       }
     } catch (error) {
-      const response = NextResponse.redirect(new URL("/login", req.url))
+      const response = NextResponse.redirect(new URL("/login", req.nextUrl))
       response.cookies.delete("userToken")
       return response
     }
   }
-  if (isPublicRoute && token && !req.nextUrl.pathname.startsWith("/precios")) {
-    return NextResponse.redirect(new URL("/precios", req.nextUrl))
-  }
+
   return NextResponse.next()
 }
 
