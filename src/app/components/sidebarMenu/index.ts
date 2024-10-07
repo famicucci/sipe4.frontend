@@ -1,1 +1,1 @@
-export { default as SidebarMenu } from "./sidebarMenu"
+export { default as SidebarMenu } from "./SidebarMenu"
