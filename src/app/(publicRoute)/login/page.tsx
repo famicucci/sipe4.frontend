@@ -3,10 +3,10 @@
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { loginRequest } from "@/services/loginRequest"
-import { LoginUser } from "@/services/loginRequest"
+import { loginRequest } from "../../../services/loginRequest"
+import { LoginUser } from "../../../services/loginRequest"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { formLoginSchema } from "./utils/formValidation"
+import { formLoginSchema } from "./utils"
 
 const LoginPage: React.FC = () => {
   const [isPending, startTransition] = useTransition()
