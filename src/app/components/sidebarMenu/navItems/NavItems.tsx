@@ -4,14 +4,14 @@ import { NavItem } from "./navItem"
 const NavItems = () => {
   const navItem = [
     {
-      icon: <IconStatistics />,
-      title: "estadisticas",
-      href: "/estadisticas",
-    },
-    {
       icon: <IconPrice />,
       title: "Precios",
       href: "/precios",
+    },
+    {
+      icon: <IconStatistics />,
+      title: "estadisticas",
+      href: "/estadisticas",
     },
   ]
 
