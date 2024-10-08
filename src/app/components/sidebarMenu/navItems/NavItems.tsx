@@ -2,15 +2,33 @@ import { IconPrice, IconStatistics } from "@/app/assets/icons"
 import { NavItem } from "./navItem"
 
 const NavItems = () => {
+  const navItem = [
+    {
+      icon: <IconStatistics />,
+      title: "estadisticas",
+      href: "/estadisticas",
+    },
+    {
+      icon: <IconPrice />,
+      title: "Precios",
+      href: "/precios",
+    },
+  ]
+
   return (
-    <div>
-      <NavItem icon={<IconPrice />} title="precios" href="/precios" />
-      <NavItem
-        icon={<IconStatistics />}
-        title="estadisticas"
-        href="/estadisticas"
-      />
-    </div>
+    <ul className="mt-6 ml-1 pr-1">
+      {navItem.map((item) => {
+        // if (item.role === "admin" && userType !== "admin") return nul
+        return (
+          <NavItem
+            key={item.title}
+            href={item.href}
+            icon={item.icon}
+            title={item.title}
+          />
+        )
+      })}
+    </ul>
   )
 }
 
