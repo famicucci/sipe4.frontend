@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "@/redux/store"
 import { getPricesRequest } from "@/services/getPricesRequest"
+import { Table } from "@/app/components/table"
 
 const PricePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -16,30 +17,31 @@ const PricePage: React.FC = () => {
   }, [])
 
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Descripción</th>
-            <th>Precios</th>
-          </tr>
-        </thead>
-        {prices.length > 0 && (
-          <tbody>
-            {prices.map((price) => (
-              <tr key={price.id}>
-                <td>{price.id}</td>
-                <td>producto</td>
-                <td>${price.amount}</td>
-              </tr>
-            ))}
-          </tbody>
-        )}
-      </table>
-      {error && <p>{JSON.stringify(error)}</p>}
-      {loading && <p>Cargando...</p>}
-    </div>
+    <Table />
+    // <div>
+    //   <table>
+    //     <thead>
+    //       <tr>
+    //         <th>Código</th>
+    //         <th>Descripción</th>
+    //         <th>Precios</th>
+    //       </tr>
+    //     </thead>
+    //     {prices.length > 0 && (
+    //       <tbody>
+    //         {prices.map((price) => (
+    //           <tr key={price.id}>
+    //             <td>{price.id}</td>
+    //             <td>producto</td>
+    //             <td>${price.amount}</td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     )}
+    //   </table>
+    //   {error && <p>{JSON.stringify(error)}</p>}
+    //   {loading && <p>Cargando...</p>}
+    // </div>
   )
 }
 
