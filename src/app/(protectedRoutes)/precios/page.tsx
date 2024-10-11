@@ -17,7 +17,7 @@ const PricePage: React.FC = () => {
   }, [])
 
   return (
-    <Table />
+    <Table prices={prices} error={error} loading={loading} />
     // <div>
     //   <table>
     //     <thead>

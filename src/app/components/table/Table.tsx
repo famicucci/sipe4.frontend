@@ -1,6 +1,8 @@
+import { PriceState } from "@/redux/states/price"
+import { TableBody } from "./tableBody"
 import { TableHead } from "./tableHead"
 
-const Table = () => {
+const Table = ({ prices, error, loading }: PriceState) => {
   const columns = [
     {
       name: "Código",
@@ -11,20 +13,11 @@ const Table = () => {
     {
       name: "Precios",
     },
-    {
-      name: "Editar",
-    },
   ]
   return (
     <table className="table-auto border-collapse w-full rounded">
       <TableHead columns={columns} />
-      <tbody>
-        <tr>
-          <td>codigo</td>
-          <td>descripcion</td>
-          <td>precios</td>
-        </tr>
-      </tbody>
+      <TableBody prices={prices} error={error} loading={loading} />
     </table>
   )
 }

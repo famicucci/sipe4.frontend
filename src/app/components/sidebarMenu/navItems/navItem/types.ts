@@ -1,5 +1,3 @@
 export interface ItemsProps {
-  href: string
-  icon: JSX.Element
-  title: string
+  item: { href: string; icon: JSX.Element; title: string }
 }

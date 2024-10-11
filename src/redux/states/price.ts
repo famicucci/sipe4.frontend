@@ -5,7 +5,7 @@ export interface Price {
   id: string
   amount: string
 }
-interface PriceState {
+export interface PriceState {
   prices: Price[]
   loading: boolean
   error: any
