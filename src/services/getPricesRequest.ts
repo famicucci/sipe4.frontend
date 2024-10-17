@@ -18,7 +18,7 @@ export const getPricesRequest = createAsyncThunk<
 
   const response = await fetch(`${baseUrl}/prices`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`, 
       "user-token": token,
     },
   })

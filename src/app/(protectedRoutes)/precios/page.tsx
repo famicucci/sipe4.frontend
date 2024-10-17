@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "@/redux/store"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import { Table } from "@/app/components/table"
+import { TableProps } from "@/app/components/table/types"
 
-const PricePage: React.FC = () => {
+const PricePage = (): TableProps => {
   const dispatch = useDispatch<AppDispatch>()
   const { prices, loading, error } = useSelector(
     (state: RootState) => state.price
@@ -15,34 +16,28 @@ const PricePage: React.FC = () => {
     dispatch(getPricesRequest())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  return (
-    <Table prices={prices} error={error} loading={loading} />
-    // <div>
-    //   <table>
-    //     <thead>
-    //       <tr>
-    //         <th>Código</th>
-    //         <th>Descripción</th>
-    //         <th>Precios</th>
-    //       </tr>
-    //     </thead>
-    //     {prices.length > 0 && (
-    //       <tbody>
-    //         {prices.map((price) => (
-    //           <tr key={price.id}>
-    //             <td>{price.id}</td>
-    //             <td>producto</td>
-    //             <td>${price.amount}</td>
-    //           </tr>
-    //         ))}
-    //       </tbody>
-    //     )}
-    //   </table>
-    //   {error && <p>{JSON.stringify(error)}</p>}
-    //   {loading && <p>Cargando...</p>}
-    // </div>
-  )
+  const columnsPrice = [
+    {
+      name: "Código",
+      selector: "id",
+      minWidth: "150px",
+      align: "center",
+    },
+    {
+      name: "Descripción",
+      selector: "description",
+      minWidth: "300px",
+      align: "left",
+    },
+    {
+      name: "Precios",
+      selector: "amount",
+      minWidth: "150px",
+      align: "center",
+      // cell: (row: any) => formatDecimal(row.price),
+    },
+  ]
+  return <Table prices={prices} columnsPrice={columnsPrice} />
 }
 
 export default PricePage

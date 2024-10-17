@@ -1,20 +1,32 @@
-import { PriceState } from "@/redux/states/price"
+"use client"
+import { TableProps } from "../types"
 
-const TableBody: React.FC<PriceState> = ({ prices, error }) => {
+const TableBody = ({ prices, columnsPrice }: TableProps) => {
   return (
     <tbody>
       {prices.length > 0 ? (
-        prices.map((price) => (
-          <tr key={price.id}>
-            <td>{price.id}</td>
-            <td>producto</td>
-            <td>${price.amount}</td>
-          </tr>
-        ))
+        <>
+          {prices.map((item) => (
+            <tr key={item.id}>
+              {columnsPrice.map((column: any) => (
+                <td
+                  key={column.name}
+                  style={{  
+                    textAlign: `${column.align}` as "left" | "right" | "center",
+                  }}
+                  className="py-2">
+                  {column.cell
+                    ? column.cell(item)
+                    : item[column.selector as keyof typeof item]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </>
       ) : (
         <tr>
-          <td className="text-center">
-            {error && <p>{JSON.stringify(error)}</p>}
+          <td className="text-center py-2">
+            <p className="text-red-400">No se muestran los Precios</p>
           </td>
         </tr>
       )}
