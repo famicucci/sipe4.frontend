@@ -1,3 +1,3 @@
 export interface TableHeadProp {
-  columnsPrice: any[]
+  columns: any[]
 }

@@ -1,17 +1,17 @@
 "use client"
 import { TableProps } from "../types"
 
-const TableBody = ({ prices, columnsPrice }: TableProps) => {
+const TableBody = ({ data, columns }: TableProps) => {
   return (
     <tbody>
-      {prices.length > 0 ? (
+      {data.length > 0 ? (
         <>
-          {prices.map((item) => (
+          {data.map((item) => (
             <tr key={item.id}>
-              {columnsPrice.map((column: any) => (
+              {columns.map((column: any) => (
                 <td
                   key={column.name}
-                  style={{  
+                  style={{
                     textAlign: `${column.align}` as "left" | "right" | "center",
                   }}
                   className="py-2">
@@ -26,7 +26,7 @@ const TableBody = ({ prices, columnsPrice }: TableProps) => {
       ) : (
         <tr>
           <td className="text-center py-2">
-            <p className="text-red-400">No se muestran los Precios</p>
+            <p className="text-gray-600">No hay nada aun</p>
           </td>
         </tr>
       )}

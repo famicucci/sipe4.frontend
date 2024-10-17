@@ -1,10 +1,10 @@
 import { TableHeadProp } from "./type"
 
-const TableHead = ({ columnsPrice }: TableHeadProp) => {
+const TableHead = ({ columns }: TableHeadProp) => {
   return (
     <thead>
       <tr>
-        {columnsPrice.map((column) => (
+        {columns.map((column) => (
           <th
             className="p-3 first:rounded-tl-lg last:rounded-tr-lg"
             key={column.name}>

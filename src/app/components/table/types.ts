@@ -1,8 +1,5 @@
-import { Price } from "@/redux/states/price"
-
 export interface TableProps {
-  prices: Price[]
-  // DataPrices: any
-  columnsPrice: any
+  data: any
+  columns: any
   //   loading: boolean
 }

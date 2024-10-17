@@ -16,7 +16,7 @@ const PricePage = (): TableProps => {
     dispatch(getPricesRequest())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const columnsPrice = [
+  const columns = [
     {
       name: "Código",
       selector: "id",
@@ -37,7 +37,7 @@ const PricePage = (): TableProps => {
       // cell: (row: any) => formatDecimal(row.price),
     },
   ]
-  return <Table prices={prices} columnsPrice={columnsPrice} />
+  return <Table data={prices} columns={columns} />
 }
 
 export default PricePage

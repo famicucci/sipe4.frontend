@@ -2,11 +2,11 @@ import { TableProps } from "./types"
 import { TableBody } from "./tableBody"
 import { TableHead } from "./tableHead"
 
-const Table = ({ prices, columnsPrice }: TableProps) => {
+const Table = ({ data, columns }: TableProps) => {
   return (
     <table className="table-auto border-collapse w-full rounded">
-      <TableHead columnsPrice={columnsPrice} />
-      <TableBody prices={prices} columnsPrice={columnsPrice} />
+      <TableHead columns={columns} />
+      <TableBody data={data} columns={columns} />
     </table>
   )
 }
