@@ -3,7 +3,6 @@ import { Price } from "../redux/states/price"
 import { RootState } from "../redux/store"
 import { AppError } from "./errorRequest"
 import { getToken } from "@/config/getCookie"
-import { decodeJWT } from "@/config/decoded"
 
 export const getPricesRequest = createAsyncThunk<
   Price[],
@@ -18,7 +17,7 @@ export const getPricesRequest = createAsyncThunk<
 
   const response = await fetch(`${baseUrl}/prices`, {
     headers: {
-      Authorization: `Bearer ${token}`, 
+      Authorization: `Bearer ${token}`,
       "user-token": token,
     },
   })

@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "@/redux/store"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import { Table } from "@/app/components/table"
 import { TableProps } from "@/app/components/table/types"
+import { formatDecimal } from "./utils"
 
 const PricePage = (): TableProps => {
   const dispatch = useDispatch<AppDispatch>()
@@ -34,10 +35,10 @@ const PricePage = (): TableProps => {
       selector: "amount",
       minWidth: "150px",
       align: "center",
-      // cell: (row: any) => formatDecimal(row.price),
+      cell: (row: any) => formatDecimal(row.amount),
     },
   ]
-  return <Table data={prices} columns={columns} />
+  return <Table data={prices} columns={columns} loading={loading} />
 }
 
 export default PricePage

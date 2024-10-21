@@ -1,7 +1,7 @@
 "use client"
 import { TableProps } from "../types"
 
-const TableBody = ({ data, columns }: TableProps) => {
+const TableBody = ({ data, columns, loading }: TableProps) => {
   return (
     <tbody>
       {data.length > 0 ? (
@@ -24,10 +24,8 @@ const TableBody = ({ data, columns }: TableProps) => {
           ))}
         </>
       ) : (
-        <tr>
-          <td className="text-center py-2">
-            <p className="text-gray-600">No hay nada aun</p>
-          </td>
+        <tr className="mx-auto text-center">
+          {loading && <td>Cargando...</td>}
         </tr>
       )}
     </tbody>
