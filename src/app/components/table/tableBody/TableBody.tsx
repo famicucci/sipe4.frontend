@@ -1,12 +1,12 @@
 "use client"
 import { TableProps } from "../types"
 
-const TableBody = ({ data, columns, loading }: TableProps) => {
+const TableBody = ({ dataTable, columns, loading }: TableProps) => {
   return (
     <tbody>
-      {data.length > 0 ? (
+      {dataTable.length > 0 ? (
         <>
-          {data.map((item) => (
+          {dataTable.map((item: any) => (
             <tr key={item.id}>
               {columns.map((column: any) => (
                 <td

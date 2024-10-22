@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getPricesRequest } from "@/services/getPricesRequest"
 
 export interface Price {
-  id: string
+  productCode: string
   amount: string
+  Product: string
+  description: string
 }
 export interface PriceState {
   prices: Price[]

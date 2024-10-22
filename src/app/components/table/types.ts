@@ -1,5 +1,5 @@
 export interface TableProps {
-  data: any
+  dataTable: any
   columns: any
   loading: boolean
 }

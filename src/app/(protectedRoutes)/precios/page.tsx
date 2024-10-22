@@ -6,6 +6,7 @@ import { getPricesRequest } from "@/services/getPricesRequest"
 import { Table } from "@/app/components/table"
 import { TableProps } from "@/app/components/table/types"
 import { formatDecimal } from "./utils"
+import pricesAdapter from "./adapters/pricesAdapter"
 
 const PricePage = (): TableProps => {
   const dispatch = useDispatch<AppDispatch>()
@@ -17,10 +18,13 @@ const PricePage = (): TableProps => {
     dispatch(getPricesRequest())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const dataTable = pricesAdapter(prices)
+
   const columns = [
     {
       name: "Código",
-      selector: "id",
+      selector: "productCode",
       minWidth: "150px",
       align: "center",
     },
@@ -38,7 +42,7 @@ const PricePage = (): TableProps => {
       cell: (row: any) => formatDecimal(row.amount),
     },
   ]
-  return <Table data={prices} columns={columns} loading={loading} />
+  return <Table dataTable={dataTable} columns={columns} loading={loading} />
 }
 
 export default PricePage
