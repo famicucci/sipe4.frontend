@@ -5,7 +5,7 @@ const pricesAdapter = (prices: Price[]) => {
     return {
       productCode: item.productCode,
       description: item.Product.description,
-      amount: Number(item.amount),
+      amount: item.amount,
     }
   })
 }

@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getPricesRequest } from "@/services/getPricesRequest"
+import pricesAdapter from "@/adapters/pricesAdapter"
+
+export interface Product {
+  description: string
+}
 
 export interface Price {
   productCode: string
   amount: string
-  Product: string
-  description: string
+  description: Product
 }
 export interface PriceState {
   prices: Price[]
@@ -33,7 +37,8 @@ export const priceSlice = createSlice({
         state.loading = true
       })
       .addCase(getPricesRequest.fulfilled, (state, action) => {
-        state.prices = action.payload
+        const adaptedPrices = pricesAdapter(action.payload)
+        state.prices = adaptedPrices
         state.loading = false
       })
       .addCase(getPricesRequest.rejected, (state, action) => {
