@@ -3,3 +3,4 @@ export interface TableProps {
   columns: any
   loading: boolean
 }
+  

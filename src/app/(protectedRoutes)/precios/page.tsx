@@ -4,17 +4,16 @@ import { useSelector, useDispatch } from "react-redux"
 import { AppDispatch, RootState } from "@/redux/store"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import { Table } from "@/app/components/table"
-import { TableProps } from "@/app/components/table/types"
 import { formatDecimal } from "./utils"
 
-const PricePage = (): TableProps => {
+const PricePage = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>()
-  const { prices, loading, error } = useSelector(
+  const { prices, loading, searchValue } = useSelector(
     (state: RootState) => state.price
   )
 
   useEffect(() => {
-    dispatch(getPricesRequest())
+    dispatch(getPricesRequest(searchValue || ""))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

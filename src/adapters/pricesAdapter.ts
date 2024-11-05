@@ -1,10 +1,8 @@
-import { Price } from "@/redux/states/price"
-
-const pricesAdapter = (prices: Price[]) => {
-  return prices.map((item: Price) => {
+const pricesAdapter = (data: any) => {
+  return data.map((item: any) => {
     return {
       productCode: item.productCode,
-      description: item.Product.description,
+      description: item["Product.description"],
       amount: item.amount,
     }
   })

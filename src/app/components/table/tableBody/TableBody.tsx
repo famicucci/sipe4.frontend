@@ -1,13 +1,12 @@
-"use client"
-import { TableProps } from "../types"
+  "use client"
+  import { TableProps } from "../types"
 
-const TableBody = ({ data, columns, loading }: TableProps) => {
-  return (
-    <tbody>
-      {data.length > 0 ? (
-        <>
-          {data.map((item: { id: string }) => (
-            <tr key={item.id}>
+  const TableBody = ({ data, columns, loading }: TableProps) => {
+    return (
+      <tbody>
+        {data.length > 0 ? (
+          data.map((item: any, index: string) => (
+            <tr key={index}>
               {columns.map((column: any) => (
                 <td
                   key={column.name}
@@ -21,15 +20,12 @@ const TableBody = ({ data, columns, loading }: TableProps) => {
                 </td>
               ))}
             </tr>
-          ))}
-        </>
-      ) : (
-        <tr className="mx-auto text-center">
-          {loading && <td>Cargando...</td>}
-        </tr>
-      )}
-    </tbody>
-  )
-}
+          ))
+        ) : (
+          <tr>{loading && <td>Cargando...</td>}</tr>
+        )}
+      </tbody>
+    )
+  }
 
-export default TableBody
+  export default TableBody

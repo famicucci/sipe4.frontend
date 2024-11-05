@@ -2,25 +2,23 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import pricesAdapter from "@/adapters/pricesAdapter"
 
-export interface Product {
-  description: string
-}
-
 export interface Price {
   productCode: string
   amount: string
-  description: Product
+  Product: string
 }
 export interface PriceState {
   prices: Price[]
   loading: boolean
   error: any
+  searchValue: string
 }
 
 const initialState: PriceState = {
   prices: [],
   loading: false,
   error: null,
+  searchValue: "",
 }
 
 export const priceSlice = createSlice({
@@ -29,6 +27,9 @@ export const priceSlice = createSlice({
   reducers: {
     setPrices: (state, action: PayloadAction<Price[]>) => {
       state.prices = action.payload
+    },
+    setSearchValue: (state, action: PayloadAction<string>) => {
+      state.searchValue = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -48,5 +49,5 @@ export const priceSlice = createSlice({
   },
 })
 
-export const { setPrices } = priceSlice.actions
+export const { setPrices, setSearchValue } = priceSlice.actions
 export default priceSlice.reducer
