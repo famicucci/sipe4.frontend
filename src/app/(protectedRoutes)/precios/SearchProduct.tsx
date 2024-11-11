@@ -6,6 +6,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { IconSearch } from "@/app/assets/icons"
 import { setSearchValue } from "@/redux/states/price"
 import { getPricesRequest } from "@/services/getPricesRequest"
+import { InputView } from "@/app/components/input"
 
 const SearchProduct = () => {
   const searchParams = useSearchParams()
@@ -38,12 +39,13 @@ const SearchProduct = () => {
 
   return (
     <form onSubmit={onSubmit} className="mx-auto py-2 relative w-1/4 ">
-      <input
+      <InputView
+        name="search"
+        type="text"
         value={searchValue}
         onChange={(e) => dispatch(setSearchValue(e.target.value))}
         placeholder="Escribe tu búsqueda"
         className="shadow appearance-none border rounded-xl w-full py-2 px-3 pr-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="text"
       />
       <button className="absolute right-1 top-1/2 transform -translate-y-1/2">
         <IconSearch />

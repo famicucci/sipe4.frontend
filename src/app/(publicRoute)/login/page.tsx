@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form"
 import { loginRequest } from "../../../services/loginRequest"
 import { LoginUser } from "../../../services/loginRequest"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { formLoginSchema } from "./utils"
+import { formLoginSchema, defaultValues } from "./utils"
+import InputContainer from "@/app/components/input/inputContainer"
 
 const LoginPage: React.FC = () => {
   const [isPending, startTransition] = useTransition()
@@ -14,11 +15,12 @@ const LoginPage: React.FC = () => {
   const router = useRouter()
 
   const {
-    register,
     handleSubmit,
     setError,
+    control,
     formState: { errors },
   } = useForm<LoginUser>({
+    defaultValues,
     resolver: yupResolver(formLoginSchema),
   })
 
@@ -43,23 +45,24 @@ const LoginPage: React.FC = () => {
         {errors.password && (
           <p className="text-red-500">{errors.password.message}</p>
         )}
-        <div>
-          <input
-            type="text"
-            placeholder="Nombre de usuario"
-            className="bg-gray-200 text-black rounded-md"
-            {...register("user")}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            placeholder="Contraseña"
-            className="bg-gray-200 text-black rounded-md"
-            {...register("password")}
-          />
-        </div>
-        <button className="bg-indigo-500 p-2 rounded-md" type="submit">
+
+        <InputContainer
+          control={control}
+          name="user"
+          type="text"
+          placeholder="Nombre de usuario"
+        />
+
+        <InputContainer
+          control={control}
+          name="password"
+          type="password"
+          placeholder="Contraseña"
+        />
+
+        <button
+          className="bg-indigo-500 text-white p-2 rounded-md"
+          type="submit">
           {!isPending ? "Entrar" : "Entrando.."}
         </button>
       </form>

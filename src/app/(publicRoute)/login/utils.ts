@@ -1,3 +1,4 @@
+import { LoginUser } from "@/services/loginRequest"
 import * as yup from "yup"
 
 export const formLoginSchema = yup
@@ -9,3 +10,8 @@ export const formLoginSchema = yup
     password: yup.string().required("El campo contraseña es requerido"),
   })
   .required()
+
+export const defaultValues: LoginUser = {
+  user: "",
+  password: "",
+}
