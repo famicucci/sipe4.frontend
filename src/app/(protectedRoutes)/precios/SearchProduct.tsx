@@ -2,40 +2,25 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, AppDispatch } from "@/redux/store"
-import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { IconSearch } from "@/app/assets/icons"
 import { setSearchValue } from "@/redux/states/price"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import { InputView } from "@/app/components/input"
 
 const SearchProduct = () => {
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
 
   const searchValue = useSelector((state: RootState) => state.price.searchValue)
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
-    const initialSearchParams = {
-      ...Object.fromEntries(searchParams.entries()),
-      search: searchValue,
-    }
-    const query = `${pathname}?${Object.entries(initialSearchParams)
-      .map(([key, value]) => `${key}=${value}`)
-      .join("&")}`
-
-    router.push(query)
+    dispatch(getPricesRequest(searchValue))
   }
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const search = searchParams.get("search") || ""
-    dispatch(getPricesRequest(search))
-    setSearchValue(search)
-  }, [searchParams])
+    dispatch(getPricesRequest(searchValue))
+  }, [dispatch, searchValue])
 
   return (
     <form onSubmit={onSubmit} className="mx-auto py-2 relative w-1/4 ">

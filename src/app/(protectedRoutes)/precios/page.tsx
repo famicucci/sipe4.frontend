@@ -6,7 +6,7 @@ import { getPricesRequest } from "@/services/getPricesRequest"
 import { Table } from "@/app/components/table"
 import { formatDecimal } from "./utils"
 
-const PricePage = (): JSX.Element => {
+const PricePage = () => {
   const dispatch = useDispatch<AppDispatch>()
   const { prices, loading, searchValue } = useSelector(
     (state: RootState) => state.price
