@@ -1,34 +1,39 @@
 "use client"
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState, AppDispatch } from "@/redux/store"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "@/redux/store"
+import { useForm } from "react-hook-form"
 import { IconSearch } from "@/app/assets/icons"
-import { setSearchValue } from "@/redux/states/price"
 import { getPricesRequest } from "@/services/getPricesRequest"
-import { InputView } from "@/app/components/input"
+import InputContainer from "@/app/components/input/inputContainer"
+export interface SearchProduct {
+  Product: string
+  search: string
+}
 
 const SearchProduct = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const { handleSubmit, control, watch } = useForm<SearchProduct>()
 
-  const searchValue = useSelector((state: RootState) => state.price.searchValue)
+  const searchValue = watch("search", "")
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    dispatch(getPricesRequest(searchValue))
+  const onSubmit = async (data: SearchProduct) => {
+    dispatch(getPricesRequest(data.search))
   }
 
   useEffect(() => {
+    dispatch(getPricesRequest(searchValue || ""))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dispatch(getPricesRequest(searchValue))
-  }, [dispatch, searchValue])
+  }, [searchValue, dispatch])
 
   return (
-    <form onSubmit={onSubmit} className="mx-auto py-2 relative w-1/4 ">
-      <InputView
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto py-2 relative w-1/4 ">
+      <InputContainer
+        control={control}
         name="search"
         type="text"
-        value={searchValue}
-        onChange={(e) => dispatch(setSearchValue(e.target.value))}
         placeholder="Escribe tu búsqueda"
         className="shadow appearance-none border rounded-xl w-full py-2 px-3 pr-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />

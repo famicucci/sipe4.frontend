@@ -8,14 +8,14 @@ export const getPricesRequest = createAsyncThunk<
   Price[],
   string,
   { state: RootState }
->("prices/getPricesRequest", async (search = "", { rejectWithValue }) => {
+>("prices/getPricesRequest", async (searchValue = "", { rejectWithValue }) => {
   const token = await getToken()
 
   const baseUrl = process.env.NEXT_PUBLIC_LOCALHOST
 
   await new Promise((resolve) => setTimeout(resolve, 3000))
 
-  const response = await fetch(`${baseUrl}/prices?search=${search}`, {
+  const response = await fetch(`${baseUrl}/prices?search=${searchValue}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "user-token": token,

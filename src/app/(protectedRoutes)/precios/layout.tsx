@@ -1,4 +1,4 @@
-import SearchProduct from "./SearchProduct"
+import SearchProduct from "./searchProduct/SearchProduct"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
