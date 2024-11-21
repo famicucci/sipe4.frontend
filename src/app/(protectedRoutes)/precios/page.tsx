@@ -42,3 +42,4 @@ const PricePage = () => {
 }
 
 export default PricePage
+  

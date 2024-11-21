@@ -14,7 +14,7 @@ const InputContainer = <T extends FieldValues>({
   return (
     <InputView
       onChange={field.onChange}
-      value={field.value ?? ""}
+      value={field.value}
       name={field.name}
       type={type}
       placeholder={placeholder}
