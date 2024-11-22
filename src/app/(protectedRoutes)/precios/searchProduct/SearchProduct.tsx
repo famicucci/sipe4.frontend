@@ -5,7 +5,7 @@ import { AppDispatch } from "@/redux/store"
 import { useForm } from "react-hook-form"
 import { IconSearch } from "@/app/assets/icons"
 import { getPricesRequest } from "@/services/getPricesRequest"
-import { InputContainer } from "@/app/components/input"
+import { Input } from "@/app/components/input"
 export interface SearchProduct {
   Product: string
   search: string
@@ -30,7 +30,7 @@ const SearchProduct = () => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="mx-auto py-2 relative w-1/4 ">
-      <InputContainer
+      <Input
         control={control}
         name="search"
         type="text"

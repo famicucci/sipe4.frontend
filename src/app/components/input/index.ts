@@ -1,1 +1,1 @@
-export { default as InputContainer } from "./inputContainer"
+export { default as Input } from "./inputContainer"

@@ -7,7 +7,7 @@ import { loginRequest } from "../../../services/loginRequest"
 import { LoginUser } from "../../../services/loginRequest"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { formLoginSchema, defaultValues } from "./utils"
-import { InputContainer } from "@/app/components/input"
+import { Input } from "@/app/components/input"
 
 const LoginPage: React.FC = () => {
   const [isPending, startTransition] = useTransition()
@@ -46,14 +46,14 @@ const LoginPage: React.FC = () => {
           <p className="text-red-500">{errors.password.message}</p>
         )}
 
-        <InputContainer
+        <Input
           control={control}
           name="user"
           type="text"
           placeholder="Nombre de usuario"
         />
 
-        <InputContainer
+        <Input
           control={control}
           name="password"
           type="password"
