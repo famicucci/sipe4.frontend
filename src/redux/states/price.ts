@@ -12,6 +12,7 @@ export interface PriceState {
   loading: boolean
   error: any
   searchValue: string
+  newPage: number
 }
 
 const initialState: PriceState = {
@@ -19,6 +20,7 @@ const initialState: PriceState = {
   loading: false,
   error: null,
   searchValue: "",
+  newPage: 1,
 }
 
 export const priceSlice = createSlice({
@@ -31,6 +33,12 @@ export const priceSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
+    setNewPage: (state, action: PayloadAction<number>) => {
+      state.newPage = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -39,7 +47,7 @@ export const priceSlice = createSlice({
       })
       .addCase(getPricesRequest.fulfilled, (state, action) => {
         const adaptedPrices = pricesAdapter(action.payload)
-        state.prices = adaptedPrices
+        state.prices = [...state.prices, ...adaptedPrices]
         state.loading = false
       })
       .addCase(getPricesRequest.rejected, (state, action) => {
@@ -49,5 +57,6 @@ export const priceSlice = createSlice({
   },
 })
 
-export const { setPrices, setSearchValue } = priceSlice.actions
+export const { setPrices, setSearchValue, setLoading, setNewPage } =
+  priceSlice.actions
 export default priceSlice.reducer
