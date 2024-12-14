@@ -9,23 +9,21 @@ import { getPricesRequest } from "@/services/getPricesRequest"
 const TableBody = ({ data, columns }: TableProps): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>()
   const isLoading = useRef<any>(null)
-  const [screen, setInscreen] = useState(false)
+  const [inScreen, setInScreen] = useState(false)
 
-  const { loading, page, searchValue } = useSelector(
-    (state: RootState) => state.price
+  const { loading, page, searchValue, hasMore } = useSelector(
+    (state: RootState) => state.price,
   )
+
   useEffect(() => {
     const observed = new IntersectionObserver((entries) => {
       const isIntersecting = entries[0].isIntersecting
       if (isIntersecting) {
-        if (!screen) {
-          dispatch(setLoading(true))
-          setInscreen(true)
-        }
-        // dispatch(getPricesRequest({ searchValue, page: page + 1 }))
+        // dispatch(setLoading(true));
+        setInScreen(true)
       } else {
-        setInscreen(false)
-        dispatch(setLoading(false))
+        setInScreen(false)
+        // dispatch(setLoading(false));
       }
     })
     observed.observe(isLoading.current)
@@ -36,46 +34,44 @@ const TableBody = ({ data, columns }: TableProps): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    const observed = new IntersectionObserver((entries) => {
-      const isIntersecting = entries[0].isIntersecting
-      if (isIntersecting) {
-        dispatch(setLoading(true))
-        dispatch(getPricesRequest({ searchValue, page: page + 1 }))
-      } else {
-        dispatch(setLoading(false))
+    if (inScreen) {
+      // llamar a la api
+      console.log(page)
+      if (hasMore) {
+        dispatch(
+          getPricesRequest({ searchValue: searchValue || "", page: page + 1 }),
+        )
       }
-    })
-    observed.observe(isLoading.current)
-
-    return () => {
-      observed.disconnect()
     }
-  }, [dispatch, searchValue, page])
+  }, [inScreen])
 
   return (
     <>
       <tbody>
-        {data.length > 0
-          ? data.map((item: any, index: string) => (
-              <tr key={index}>
-                {columns.map((column: any) => (
-                  <td
-                    key={column.name}
-                    style={{
-                      textAlign: column.align as "left" | "right" | "center",
-                    }}
-                    className="py-5">
-                    {column.cell
-                      ? column.cell(item)
-                      : item[column.selector as keyof typeof item]}
-                  </td>
-                ))}
-              </tr>
-            ))
-          : null}
-        <tr className="w-full m-10 text-center" ref={isLoading}>
-          <td>{loading && <div>Cargando...</div>}</td>
-        </tr>
+        {data.map((item: any, index: string) => (
+          <tr key={index}>
+            {columns.map((column: any) => (
+              <td
+                key={column.name}
+                style={{
+                  textAlign: column.align as "left" | "right" | "center",
+                }}
+                className="py-5"
+              >
+                {column.cell
+                  ? column.cell(item)
+                  : item[column.selector as keyof typeof item]}
+              </td>
+            ))}
+          </tr>
+        ))}
+        {hasMore && (
+          <tr className="w-full m-10 text-center" ref={isLoading}>
+            <td>
+              <div>Cargando...</div>
+            </td>
+          </tr>
+        )}
       </tbody>
     </>
   )

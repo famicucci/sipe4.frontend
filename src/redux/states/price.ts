@@ -13,6 +13,7 @@ export interface PriceState {
   error: any
   searchValue: string
   page: number
+  hasMore: boolean
 }
 
 const initialState: PriceState = {
@@ -20,7 +21,8 @@ const initialState: PriceState = {
   loading: false,
   error: null,
   searchValue: "",
-  page: 1,
+  page: 0,
+  hasMore: true,
 }
 
 export const priceSlice = createSlice({
@@ -47,8 +49,21 @@ export const priceSlice = createSlice({
         state.loading = true
       })
       .addCase(getPricesRequest.fulfilled, (state, action) => {
-        const adaptedPrices = pricesAdapter(action.payload)
-        state.prices = [...state.prices, ...adaptedPrices]
+        const adaptedPrices = pricesAdapter(action.payload.data)
+
+        if (action.payload.page === 1) {
+          state.prices = adaptedPrices
+        } else {
+          state.prices = [...state.prices, ...adaptedPrices]
+        }
+
+        if (action.payload.data.length < 20) {
+          state.hasMore = false
+        } else {
+          state.hasMore = true
+        }
+
+        state.page = action.payload.page
         state.loading = false
       })
       .addCase(getPricesRequest.rejected, (state, action) => {

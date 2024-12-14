@@ -5,17 +5,17 @@ import { AppError } from "./errorRequest"
 import { getToken } from "@/config/getCookie"
 
 export const getPricesRequest = createAsyncThunk<
-  Price[],
+  { data: Price[]; page: number },
   { searchValue: string; page: number },
   { state: RootState }
 >(
   "prices/getPricesRequest",
-  async ({ searchValue = "", page = 1 }, { rejectWithValue }) => {
+  async ({ searchValue = "", page }, { rejectWithValue }) => {
     const token = await getToken()
 
     const baseUrl = process.env.NEXT_PUBLIC_LOCALHOST
 
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    // await new Promise((resolve) => setTimeout(resolve, 3000))
 
     const response = await fetch(
       `${baseUrl}/prices?search=${searchValue}&page=${page}`,
@@ -24,7 +24,7 @@ export const getPricesRequest = createAsyncThunk<
           Authorization: `Bearer ${token}`,
           "user-token": token,
         },
-      }
+      },
     )
     const data = await response.json()
 
@@ -32,6 +32,7 @@ export const getPricesRequest = createAsyncThunk<
       const error = new AppError(data.error, data.message, data.status)
       return rejectWithValue(error)
     }
-    return data
-  }
+
+    return { data, page }
+  },
 )

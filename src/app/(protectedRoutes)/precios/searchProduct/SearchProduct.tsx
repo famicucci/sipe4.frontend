@@ -29,10 +29,10 @@ const SearchProduct = () => {
     )
   }
 
-  useEffect(() => {
-    dispatch(getPricesRequest({ searchValue: searchValue || "", page: 1 }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page])
+  // useEffect(() => {
+  //   dispatch(getPricesRequest({ searchValue: searchValue || "", page: 1 }))
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch, page])
 
   return (
     <form
