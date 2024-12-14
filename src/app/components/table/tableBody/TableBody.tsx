@@ -1,45 +1,56 @@
 "use client"
 import { TableProps } from "../types"
-import { useEffect, useRef } from "react"
-import { RootState } from "@/redux/store"
+import { useEffect, useState, useRef } from "react"
+import { RootState, AppDispatch } from "@/redux/store"
 import { useSelector, useDispatch } from "react-redux"
-import { setLoading, setNewPage } from "@/redux/states/price"
+import { setLoading } from "@/redux/states/price"
 import { getPricesRequest } from "@/services/getPricesRequest"
 
 const TableBody = ({ data, columns }: TableProps): JSX.Element => {
-  const dispatch = useDispatch()
-  const isloading = useRef<any>(null)
+  const dispatch = useDispatch<AppDispatch>()
+  const isLoading = useRef<any>(null)
+  const [screen, setInscreen] = useState(false)
 
-  const { loading, newPage } = useSelector((state: RootState) => state.price)
-
-  const scrollPrices = async () => {
-    await getPricesRequest({
-      searchValue: "",
-      newPage: newPage,
-    })
-  }
+  const { loading, page, searchValue } = useSelector(
+    (state: RootState) => state.price
+  )
   useEffect(() => {
-    scrollPrices()
-  }, [newPage])
-
-  useEffect(() => {
-    const observe = new IntersectionObserver((entries) => {
-      if (entries[0]?.isIntersecting) {
-        if (!loading) {
+    const observed = new IntersectionObserver((entries) => {
+      const isIntersecting = entries[0].isIntersecting
+      if (isIntersecting) {
+        if (!screen) {
           dispatch(setLoading(true))
-          dispatch(setNewPage(newPage + 1))
+          setInscreen(true)
         }
+        // dispatch(getPricesRequest({ searchValue, page: page + 1 }))
+      } else {
+        setInscreen(false)
+        dispatch(setLoading(false))
+      }
+    })
+    observed.observe(isLoading.current)
+
+    return () => {
+      observed.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const observed = new IntersectionObserver((entries) => {
+      const isIntersecting = entries[0].isIntersecting
+      if (isIntersecting) {
+        dispatch(setLoading(true))
+        dispatch(getPricesRequest({ searchValue, page: page + 1 }))
       } else {
         dispatch(setLoading(false))
       }
     })
-    if (isloading.current) {
-      observe.observe(isloading.current)
-    }
+    observed.observe(isLoading.current)
+
     return () => {
-      observe.disconnect()
+      observed.disconnect()
     }
-  }, [])
+  }, [dispatch, searchValue, page])
 
   return (
     <>
@@ -62,14 +73,8 @@ const TableBody = ({ data, columns }: TableProps): JSX.Element => {
               </tr>
             ))
           : null}
-        <tr>
-          {data.length > 0 && (
-            <td
-              ref={isloading}
-              className="p-20 text-center flex justify-center">
-              {loading && <div>Cargando...</div>}
-            </td>
-          )}
+        <tr className="w-full m-10 text-center" ref={isLoading}>
+          <td>{loading && <div>Cargando...</div>}</td>
         </tr>
       </tbody>
     </>

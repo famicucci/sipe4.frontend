@@ -6,23 +6,26 @@ import { getToken } from "@/config/getCookie"
 
 export const getPricesRequest = createAsyncThunk<
   Price[],
-  { searchValue: string; newPage: number },
+  { searchValue: string; page: number },
   { state: RootState }
 >(
   "prices/getPricesRequest",
-  async ({ searchValue, newPage }, { rejectWithValue }) => {
+  async ({ searchValue = "", page = 1 }, { rejectWithValue }) => {
     const token = await getToken()
 
     const baseUrl = process.env.NEXT_PUBLIC_LOCALHOST
 
     await new Promise((resolve) => setTimeout(resolve, 3000))
 
-    const response = await fetch(`${baseUrl}/prices?search=${searchValue}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "user-token": token,
-      },
-    })
+    const response = await fetch(
+      `${baseUrl}/prices?search=${searchValue}&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "user-token": token,
+        },
+      }
+    )
     const data = await response.json()
 
     if (!response.ok) {

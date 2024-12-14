@@ -8,17 +8,12 @@ import { formatDecimal } from "./utils"
 
 const PricePage = () => {
   const dispatch = useDispatch<AppDispatch>()
-  const { prices, loading, searchValue, newPage } = useSelector(
+  const { prices, loading, searchValue, page } = useSelector(
     (state: RootState) => state.price
   )
 
   useEffect(() => {
-    dispatch(
-      getPricesRequest({
-        searchValue: "",
-        newPage: newPage,
-      })
-    )
+    dispatch(getPricesRequest({ searchValue: searchValue || "", page: 1 }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

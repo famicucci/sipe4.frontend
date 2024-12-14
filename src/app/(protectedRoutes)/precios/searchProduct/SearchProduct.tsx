@@ -1,11 +1,12 @@
 "use client"
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "@/redux/store"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState, AppDispatch } from "@/redux/store"
 import { useForm } from "react-hook-form"
 import { IconSearch } from "@/app/assets/icons"
 import { getPricesRequest } from "@/services/getPricesRequest"
 import { Input } from "@/app/components/input"
+
 export interface SearchProduct {
   Product: string
   search: string
@@ -13,18 +14,25 @@ export interface SearchProduct {
 
 const SearchProduct = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const { page } = useSelector((state: RootState) => state.price)
+
   const { handleSubmit, control, watch } = useForm<SearchProduct>()
 
   const searchValue = watch("search", "")
 
-  const onSubmit = async (data: SearchProduct) => {
-    dispatch(getPricesRequest(data.search))
+  const onSubmit = (data: SearchProduct) => {
+    dispatch(
+      getPricesRequest({
+        searchValue: data.search,
+        page: 1,
+      })
+    )
   }
 
   useEffect(() => {
-    dispatch(getPricesRequest(searchValue || ""))
+    dispatch(getPricesRequest({ searchValue: searchValue || "", page: 1 }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValue, dispatch])
+  }, [dispatch, page])
 
   return (
     <form
